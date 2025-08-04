@@ -79,17 +79,18 @@ const bookAppointment=async()=>{
   }
   try {
     const date=docSlots[slotIndex][0].dateTime
+    console.log(date)
     
     let day=date.getDate()
     let month=date.getMonth()+1
     let year=date.getFullYear()
     const slotDate=day+"_"+month+"_"+year
     const{data}=await axios.post(backendUrl+'/api/user/book-appointment',{docId,slotDate,slotTime},{headers:{token}})
-    if(data.succes){
+    if(data.success){
       toast.success(data.message)
       getDoctorsData()
       console.log('check')
-      navigate('/my-appointment')
+      navigate('/my-appointments')
     }
     else{
       console.log('check')
