@@ -53,15 +53,22 @@ const getAvailableSort = async()=>{
     while(currentDate < endTime)
     {
       let formattedTime=currentDate.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
-
+      let day=currentDate.getDate()
+      let month =currentDate.getMonth()+1
+      let year=currentDate.getFullYear()
+      const slotDate= day+"_"+month+"_"+year
+      const slotTime=formattedTime
+      const isSlotAvailable=docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime)?false : true
+      if(isSlotAvailable)
+      {
       //add slot to array
       timeSlot.push(
         {
           dateTime: new Date(currentDate),
           time: formattedTime
-        }
-       
+        } 
       )
+      }
 
        //incrememt time by 30 miniutes
         currentDate.setMinutes(currentDate.getMinutes()+30)
@@ -80,6 +87,8 @@ const bookAppointment=async()=>{
   try {
     const date=docSlots[slotIndex][0].dateTime
     console.log(date)
+
+
     
     let day=date.getDate()
     let month=date.getMonth()+1

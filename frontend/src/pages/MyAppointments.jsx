@@ -1,14 +1,39 @@
-import React, { useContext, useState } from 'react'
+import React, { use, useContext, useState,useEffect } from 'react'
 import { AppContext } from '../context/Appcontext'
-
+import axios from 'axios'
+import { toast } from 'react-toastify'
 const MyAppointments = () => {
-const {doctors} = useContext(AppContext)
+const {backendUrl,token} = useContext(AppContext)
+const [appointments, setAppointments] = useState([])
+const getUserAppointments = async () => {
+  try {
+    const {data}= await axios.get( backendUrl+ '/api/user/appointments', {headers: {token}})
+    if(data.success){
+      setAppointments(data.appointments.reverse())
+      console.log(data.appointments)
+    }
+
+    
+  } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    
+  }
+}
+useEffect(() =>{
+  if(token){
+    getUserAppointments()
+  }
+
+},[token])
+
+
 
   return (
     <div>
       <p className='pb-3 mt-2 font-medium text-zinc-800 border-b'>MY Appointment</p>
       <div>
-        {doctors.slice(0,5).map((item,index)=>(
+        {appointments.map((item,index)=>(
           <div className='grid grid-col-[1fr_2fr] gap-4 sm:flex sm:gap-6 border-b border-gray-200 py-2' key={index}>
             <div>
               <img className=' w-32 bg-indigo-50' src={item.image} alt="" />
