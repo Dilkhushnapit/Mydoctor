@@ -108,6 +108,7 @@ const bookAppointment =async(req,res)=>
 {
   try {
     const {docId,slotDate,slotTime}=req.body
+
      const userId = req.userId;
      const docData=await doctorModel.findById(docId).select('-password')
 
@@ -148,9 +149,9 @@ const bookAppointment =async(req,res)=>
       slotTime,
       slotDate,
       date: Date.now(),
-
-
      }
+     console.log('check the slot date');
+     console.log(appointmentData.slotTime);
      const newAppointment=new appointmentModel(appointmentData);
      await newAppointment.save()
      // save new slots data in doctors data;

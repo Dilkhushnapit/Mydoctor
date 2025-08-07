@@ -3,8 +3,8 @@ const appointmentSchema= new mongoose.Schema(
     {
         userId:{type:String, required:true },
         docId:{type:String,required:true},
-        slotData:{type:String,require:true},
-        slotTime:{type:String,require:true},
+        slotDate:{type:String,required:true},
+        slotTime:{type:String,required:true},
         userData:{type:Object,require:true},
         docData:{type:Object,require:true},
         amount:{type:Number,require:true},
