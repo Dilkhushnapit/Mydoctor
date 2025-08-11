@@ -6,6 +6,7 @@ import {v2 as cloudinary} from "cloudinary"
 import { json } from 'express' 
 import doctorModel from '../models/doctorModel.js'
 import jwt from 'jsonwebtoken'
+import appointmentModel from '../models/appointmentMolde.js'
 //api for adding doctors 
 const addDoctor=async(req,res)=>{
     try {
@@ -84,5 +85,18 @@ const allDoctors= async(req,res)=>{
         
     }
 }
+// api to get all apointment list
+const appointmentsAdmin=async(req,res)=>{
+   try {
+     const appointments=await appointmentModel.find([]);
+     res.json({success:true,appointments})
 
-export {addDoctor,loginAdmin,allDoctors}
+    
+   } catch (error) {
+    console.log(error)
+    res.json({success:false,message:error.message})
+    
+   }
+}
+
+export {addDoctor,loginAdmin,allDoctors,appointmentsAdmin}

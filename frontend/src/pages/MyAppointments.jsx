@@ -2,9 +2,12 @@ import React, { use, useContext, useState,useEffect } from 'react'
 import { AppContext } from '../context/Appcontext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 const MyAppointments = () => {
 const {backendUrl,token,getDoctorsData} = useContext(AppContext)
 const [appointments, setAppointments] = useState([])
+
+const navigate=useNavigate([])
 const months= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const slotDateFormat = (slotDate) => {
   const dateArray=slotDate.split('_');
@@ -69,6 +72,20 @@ const initPay=(order)=>{
     receipt:order.receipt,
     handler:async (response)=>{
       console.log(response);
+      try {
+        const {data}=await axios.post(backendUrl+'/api/user/verify-razorpay',response,{headers:{token}})
+        if(data.success){
+          getUserAppointments();
+          navigate('/my-appointments');
+        }
+        else{
+          toast.error(data.message);
+        }
+
+      } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+      }
     }
 
   }
@@ -82,6 +99,7 @@ const appointmentRazorpay=async(appointmentId)=>{
   if(data.success){
     console.log(data.order)
     initPay(data.order)
+
   }
   else{
     console.log(data.message)
@@ -120,7 +138,8 @@ const appointmentRazorpay=async(appointmentId)=>{
               {/* for resopnsive */}
             </div>
             <div className='flex flex-col gap-2 justify-end'>
-              {!item.cancelled && <button onClick={() => appointmentRazorpay(item._id)} className='text-sm text-stone-500 text-center sm:min-w-84 py-2 border rounded hover:bg-blue-500 hover:text-white transition-all duration-300'>Pay Online</button>}
+              {!item.cancelled && !item.payment && <button onClick={() => appointmentRazorpay(item._id)} className='text-sm text-stone-500 text-center sm:min-w-84 py-2 border rounded hover:bg-blue-500 hover:text-white transition-all duration-300'>Pay Online</button>}
+              {!item.cancelled && item.payment && <button className='text-sm text-stone-500 text-center sm:min-w-84 py-2 border rounded bg-blue-200 font-bold '>Paid</button>}
 
               {!item.cancelled && <button onClick={() => cancelAppointment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-84 py-2 border rounded hover:bg-red-500 hover:text-white transition-all duration-300'>Cancel appointment</button>}
               {item.cancelled && <button className='text-sm  text-center sm:min-w-84 py-2 border rounded bg-white text-red-500'>Cancelled Appointment</button>}
