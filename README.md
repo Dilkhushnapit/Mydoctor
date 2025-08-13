@@ -6,13 +6,13 @@ Built with **React.js**, **Tailwind CSS**, **Node.js**, **Express**, and **Mongo
 
 ---
 
-## Features
+##  Features
 
 ### **For Patients**
 - Browse available doctors by specialty
 - Book appointments with preferred date & time
 - View upcoming and past appointments
-- Cancel  appointments
+- Cancel or reschedule appointments
 
 ### **For Doctors**
 - Secure login with JWT authentication
@@ -22,7 +22,7 @@ Built with **React.js**, **Tailwind CSS**, **Node.js**, **Express**, and **Mongo
 
 ---
 
-##Tech Stack
+##  Tech Stack
 
 ### **Frontend**
 - React.js
