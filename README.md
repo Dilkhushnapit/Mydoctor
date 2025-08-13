@@ -6,13 +6,13 @@ Built with **React.js**, **Tailwind CSS**, **Node.js**, **Express**, and **Mongo
 
 ---
 
-## 🚀 Features
+## Features
 
 ### **For Patients**
 - Browse available doctors by specialty
 - Book appointments with preferred date & time
 - View upcoming and past appointments
-- Cancel or reschedule appointments
+- Cancel  appointments
 
 ### **For Doctors**
 - Secure login with JWT authentication
@@ -22,7 +22,7 @@ Built with **React.js**, **Tailwind CSS**, **Node.js**, **Express**, and **Mongo
 
 ---
 
-## 🛠 Tech Stack
+##Tech Stack
 
 ### **Frontend**
 - React.js
@@ -42,7 +42,7 @@ Built with **React.js**, **Tailwind CSS**, **Node.js**, **Express**, and **Mongo
 ## 📂 Project Structure
 
 │
-├── backend/ # Express API server
-├── frontend(frontend for Client)/ # React frontend
-├── Admin(Frontend for Admin and Doctors)/ # React frontend
+├── backend/ # Express API server<br>
+├── frontend(frontend for Client)/ # React frontend<br>
+├── Admin(Frontend for Admin and Doctors)/ # React frontend<br>
 ├── README.md # Project documentation
