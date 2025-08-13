@@ -7,6 +7,7 @@ import { json } from 'express'
 import doctorModel from '../models/doctorModel.js'
 import jwt from 'jsonwebtoken'
 import appointmentModel from '../models/appointmentMolde.js'
+import userModel from '../models/userModel.js'
 //api for adding doctors 
 const addDoctor=async(req,res)=>{
     try {
@@ -88,7 +89,7 @@ const allDoctors= async(req,res)=>{
 // api to get all apointment list
 const appointmentsAdmin=async(req,res)=>{
    try {
-     const appointments=await appointmentModel.find([]);
+     const appointments=await appointmentModel.find({});
      res.json({success:true,appointments})
 
     
@@ -98,5 +99,48 @@ const appointmentsAdmin=async(req,res)=>{
     
    }
 }
+//api for appointment cancilation
+const appointmentCancel = async (req, res) => {
+  try {
+    const { appointmentId } = req.body;
+    const appointment = await appointmentModel.findById(appointmentId);
+   
+    await appointmentModel.findByIdAndUpdate(appointmentId, {
+      cancelled: true,
+    });
+    //reasing doctorslot
+    const { docId, slotDate, slotTime } = appointment;
+    const docData = await doctorModel.findById(docId);
+    const slots_booked = docData.slots_booked;
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (e) => e !== slotTime
+    );
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
 
-export {addDoctor,loginAdmin,allDoctors,appointmentsAdmin}
+    res.json({ success: true, message: "Appointment cancelled successfully" });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+//api to get Dash boar data for admin portal
+const adminDashboard=async(req,res)=>{
+    try {
+        const doctors = await doctorModel.find({});
+        const user=await userModel.find({});
+        const appointments=await appointmentModel.find({});
+        const dashData={
+            doctors:doctors.length,
+            appointments:appointments.length,
+            patients:user.length,
+            latestAppointments:appointments.reverse().slice(0,5)
+
+        }
+        res.json({success:true,dashData})
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+export {addDoctor,loginAdmin,allDoctors,appointmentsAdmin,appointmentCancel,adminDashboard}
