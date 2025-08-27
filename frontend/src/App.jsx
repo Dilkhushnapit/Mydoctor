@@ -6,7 +6,7 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import MyAppointments from "./pages/MyAppointments";
 import { Route, Routes } from "react-router-dom";
-import Myprofile from "./pages/Myprofile";
+import Myprofile from "./pages/MyProfile";
 import Appointment from "./pages/Appointment";
 import Navbar from "./components/Navbar";
 import "./index.css";
